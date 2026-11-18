@@ -1,0 +1,423 @@
+/* ============================================================
+   ONE MORE v24 — THE ARMOURY, THE SCRIBE, THE EIGHT BRUSHES
+   The menus now show the game's own art: the weapon models and
+   the character the run actually draws. Paper, ink, one red.
+   ============================================================ */
+
+/* ---------- the armoury: a stage and a rack ---------- */
+.screen-brush .set-wrap.armory{
+  width: min(1000px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+  display: flex;
+  flex-direction: column;
+  transform: none;
+  overflow: hidden;
+  padding: clamp(14px, 2.4vh, 26px) clamp(14px, 2.2vw, 28px) clamp(12px, 2vh, 18px);
+}
+.armory .set-head{ flex: 0 0 auto; margin-bottom: 0; }
+.armory .brush-room-hint{ margin-top: 6px; }
+.armory-body{
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: clamp(12px, 2vw, 22px);
+  margin: clamp(10px, 1.8vh, 16px) 0 clamp(10px, 1.6vh, 14px);
+}
+
+/* the stage: the brush under the hand, held by the scribe it dresses */
+.armory-stage{
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px 12px;
+  border: 1.4px solid var(--ink);
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(var(--glaze), .9), transparent 64%),
+    var(--paper-92);
+  box-shadow: 4px 5px 0 rgba(26,23,20,.12);
+  overflow: hidden;
+}
+.armory-stage::after{
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--ink-12);
+  pointer-events: none;
+}
+/* a brushed ring stands behind the figure, as on the title */
+.armory-ring{
+  position: absolute;
+  left: 50%;
+  top: clamp(8px, 2vh, 18px);
+  width: min(58%, 250px);
+  aspect-ratio: 1;
+  transform: translateX(-50%) rotate(-28deg);
+  border-radius: 50%;
+  border: clamp(5px, .9vh, 8px) solid var(--ink-12);
+  border-top-color: transparent;
+  filter: var(--rough-soft);
+  pointer-events: none;
+}
+.armory-stage.is-held .armory-ring{ border-color: rgba(178,58,43,.16); border-top-color: transparent; }
+.armory-fig{
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: clamp(140px, 30vh, 260px);
+  flex: 0 0 auto;
+}
+.armory-tool{
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: clamp(54px, 11vh, 96px);
+  flex: 0 0 auto;
+  border-top: 1px dashed var(--ink-25);
+  border-bottom: 1px dashed var(--ink-25);
+  background: linear-gradient(to right, transparent, rgba(var(--glaze), .6) 20%, rgba(var(--glaze), .6) 80%, transparent);
+}
+.armory-plate{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.ap-kanji{
+  flex: none;
+  font-family: var(--display);
+  font-size: clamp(30px, 4.6vh, 44px);
+  line-height: 1;
+  color: var(--ink);
+}
+.armory-stage.is-held .ap-kanji{ color: var(--red); }
+.armory-stage.is-sealed .ap-kanji{ color: var(--ink-45); }
+.ap-copy{ display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; text-align: left; }
+.ap-name{
+  font-family: var(--display);
+  font-size: clamp(17px, 2.7vh, 24px);
+  letter-spacing: .08em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.ap-kind{ font-size: 8px; letter-spacing: .15em; line-height: 1.5; color: var(--ink-62); }
+.ap-state{
+  flex: none;
+  padding: 5px 9px 4px;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  white-space: nowrap;
+  color: var(--ink-70);
+  border: 1px solid var(--ink-25);
+  background: var(--paper-80);
+}
+.armory-stage.is-held .ap-state{
+  color: var(--paper);
+  background: var(--red);
+  border-color: var(--red);
+  box-shadow: 2px 2px 0 rgba(26,23,20,.2);
+  transform: rotate(-2deg);
+}
+.armory-stage.is-sealed .ap-state{ color: var(--red); border-color: rgba(178,58,43,.5); }
+.ap-desc{
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  min-height: 3.3em;
+  font-size: 9.5px;
+  line-height: 1.7;
+  letter-spacing: .04em;
+  color: var(--ink-70);
+  text-align: left;
+}
+.ap-stats{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+.ap-stat{ display: flex; flex-direction: column; gap: 4px; }
+.ap-stat span{ font-size: 7.5px; letter-spacing: .22em; color: var(--ink-62); text-align: left; }
+.ap-bar{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+.ap-bar i{ height: 6px; background: var(--ink-12); }
+.ap-bar i.on{ background: var(--ink); }
+.armory-stage.is-held .ap-bar i.on{ background: var(--red); }
+.armory-stage.is-sealed .ap-bar i.on{ background: var(--ink-45); }
+.ap-arts{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  min-height: 19px;
+}
+.ap-arts-k{ font-size: 7.5px; letter-spacing: .2em; color: var(--red); margin-right: 3px; }
+.ap-art{
+  padding: 3px 6px 2px;
+  font-size: 7.5px;
+  letter-spacing: .12em;
+  color: var(--ink-70);
+  border: 1px solid var(--ink-25);
+  background: var(--paper-80);
+}
+
+/* the rack: all eight, as true models */
+.armory .brush-rows{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1px 3px 1px 1px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-25) transparent;
+}
+.armory .br-row{
+  flex: 1 1 0;
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: minmax(84px, 36%) 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px 5px 6px;
+  text-align: left;
+  background: var(--paper-80);
+  border: 1px solid var(--ink-25);
+  transition: border-color .14s ease, transform .14s ease, background .14s ease, box-shadow .14s ease;
+}
+.br-thumb{ display: block; width: 100%; height: 44px; }
+.br-k{ font-family: var(--display); font-size: 20px; line-height: 1; color: var(--ink); text-align: center; }
+.br-n{
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.br-s{
+  min-width: 30px;
+  padding: 4px 6px 3px;
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--ink-25);
+  border: 1px solid var(--ink-25);
+}
+.br-s.is-held{
+  color: var(--paper);
+  background: var(--red);
+  border-color: var(--red);
+  box-shadow: 2px 2px 0 rgba(30,26,22,.2);
+}
+.br-s.br-prog{
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--red);
+  border-color: rgba(178,58,43,.42);
+}
+.armory .br-row{ position: relative; }
+.armory .br-row::before{
+  content: "";
+  position: absolute;
+  left: -1px; top: -1px; bottom: -1px;
+  width: 4px;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: 50% 50%;
+  transition: transform .16s ease;
+}
+.armory .br-row:hover,
+.armory .br-row.is-focus{
+  border-color: var(--ink);
+  background: var(--paper-92);
+}
+.armory .br-row:hover::before,
+.armory .br-row.is-focus::before{ transform: scaleY(1); }
+.armory .br-row.is-chosen::before{ background: var(--red); transform: scaleY(1); }
+.armory .br-row:hover .br-thumb,
+.armory .br-row.is-focus .br-thumb{ transform: translateX(3px) rotate(-2deg); }
+.br-thumb{ transition: transform .18s ease; }
+.armory .br-row.is-chosen{
+  border-color: var(--red);
+  background: var(--paper-92);
+  box-shadow: 2px 3px 0 rgba(178,58,43,.2);
+}
+.armory .br-row.is-chosen .br-n,
+.armory .br-row.is-chosen .br-k{ color: var(--red); }
+.armory .br-row.is-sealed .br-n{ color: var(--ink-62); }
+.armory .br-row.is-sealed .br-k{ color: var(--ink-45); }
+.armory .set-back{ flex: 0 0 auto; margin-top: 0; }
+
+/* the wide room on a narrow sheet: stage above, rack below */
+@media (max-width: 780px){
+  .screen-brush .set-wrap.armory{
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+    padding: 12px 10px 10px;
+  }
+  .armory .set-sub{ display: none; }
+  .armory-body{
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: min-content;
+    gap: 8px;
+    overflow-y: auto;
+    margin: 8px 0;
+  }
+  .armory-stage{
+    display: grid;
+    grid-template-columns: 40% minmax(0, 1fr);
+    grid-template-areas:
+      "fig plate"
+      "fig stats"
+      "tool tool"
+      "desc desc"
+      "arts arts";
+    column-gap: 10px;
+    align-items: center;
+    padding: 8px 10px 10px;
+    overflow: visible;
+  }
+  .armory-ring{ left: 20%; top: 6px; width: 34%; }
+  .armory-fig{ grid-area: fig; height: 124px; }
+  .armory-tool{ grid-area: tool; height: 52px; margin-top: 6px; }
+  .armory-plate{ grid-area: plate; margin-top: 0; flex-wrap: wrap; gap: 6px 8px; }
+  .ap-kanji{ font-size: 27px; }
+  .ap-name{ font-size: 15px; letter-spacing: .05em; }
+  .ap-kind{ display: none; }
+  .ap-state{ font-size: 7px; padding: 4px 6px 3px; }
+  .ap-stats{ grid-area: stats; margin-top: 0; gap: 6px; }
+  .ap-desc{ grid-area: desc; min-height: 0; font-size: 8.8px; }
+  .ap-arts{ grid-area: arts; margin-top: 6px; }
+  .armory .brush-rows{ overflow: visible; }
+  .armory .br-row{ flex: none; min-height: 46px; grid-template-columns: minmax(74px, 30%) 24px minmax(0, 1fr) auto; }
+  .br-n{ font-size: 9px; letter-spacing: .12em; }
+}
+@media (max-height: 560px) and (orientation: landscape){
+  .armory .set-kicker, .armory .set-sub, .armory .brush-room-hint{ display: none; }
+  .armory-fig{ height: clamp(92px, 26vh, 150px); }
+  .armory-tool{ height: 44px; }
+  .ap-desc, .ap-arts{ display: none; }
+  .armory .br-row{ min-height: 30px; }
+  .br-thumb{ height: 24px; }
+}
+
+/* ---------- the title's brush door wears its weapon ---------- */
+.brush-entry{ width: min(430px, 92vw); }
+.be-tool{
+  display: block;
+  flex: none;
+  width: 112px;
+  height: 40px;
+  margin-left: auto;
+}
+.brush-entry .be-open{ margin-left: 4px; }
+.brush-entry:hover .be-tool{ transform: translateX(2px) rotate(-2deg); }
+.be-tool{ transition: transform .18s ease; }
+@media (max-width: 420px){
+  .be-tool{ width: 84px; height: 32px; }
+}
+
+/* ---------- the rest sheet shows the scribe ---------- */
+.pause-fig{
+  display: block;
+  width: 200px;
+  height: 140px;
+  margin: -10px auto -12px;
+}
+@media (max-height: 620px){
+  .pause-fig{ width: 150px; height: 100px; }
+}
+
+/* ---------- the wrist: the brush chip wears its model ---------- */
+.load-item.load-brush{ gap: 5px; }
+.load-tool{ display: block; width: 44px; height: 17px; }
+
+/* ---------- the title lands at once on every return ---------- */
+.screen-title.is-settled *,
+.screen-title.is-settled *::before,
+.screen-title.is-settled *::after{
+  animation-delay: 0s !important;
+}
+
+/* ---------- the over sheet: the scribe that fell, and actions that fit ---------- */
+.over-panel{ position: relative; }
+.over-fig{
+  position: absolute;
+  z-index: 0;
+  right: clamp(10px, 2.2vw, 26px);
+  top: clamp(8px, 1.6vh, 16px);
+  width: 150px;
+  height: 108px;
+  opacity: .62;
+  pointer-events: none;
+}
+.over-panel > *:not(.over-fig){ position: relative; z-index: 1; }
+.over-panel .over-kicker,
+.over-panel .over-title,
+.over-panel .over-sub{ padding-right: 150px; }
+.over-actions{ flex-wrap: wrap; }
+.over-actions .block-btn{ flex: 1 1 100%; }
+.over-actions .ghost-btn{ flex: 1 1 0; min-width: 118px; white-space: nowrap; }
+@media (max-width: 720px){
+  .over-fig{ width: 96px; height: 70px; opacity: .46; }
+  .over-panel .over-kicker,
+  .over-panel .over-title,
+  .over-panel .over-sub{ padding-right: 92px; }
+  .over-actions .ghost-btn{ flex: 1 1 40%; }
+}
+
+/* ---------- every room's rows: name and word together, the state on the right ----------
+   The toggle, the price, the seal — whatever a row answers with — now sits on
+   one right-hand rail, so a room reads down its edge instead of across its middle. */
+.set-row{
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "kanji name state"
+    "kanji desc state";
+  column-gap: 14px;
+  row-gap: 4px;
+  align-items: center;
+}
+.set-row > .set-kanji{ grid-area: kanji; align-self: center; }
+.set-row > .set-name{ grid-area: name; align-self: end; min-width: 0; }
+.set-row > .set-desc{
+  grid-area: desc;
+  align-self: start;
+  max-width: none;
+  line-height: 1.6;
+  text-align: left;
+}
+.set-row > .set-state{
+  grid-area: state;
+  align-self: center;
+  justify-self: end;
+  margin: 0;
+  white-space: nowrap;
+}
+@media (max-width: 740px){
+  .set-row{
+    grid-template-areas:
+      "kanji name state"
+      "kanji desc desc";
+    column-gap: 10px;
+  }
+  .set-row > .set-state{ align-self: start; }
+  .set-row > .set-name{ white-space: normal; }
+}
+.over-panel{ width: min(640px, calc(100vw - 36px)); }
