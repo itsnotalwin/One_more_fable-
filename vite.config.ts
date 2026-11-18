@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages project-site URL: https://itsnotalwin.github.io/One_more_fable-/
+  base: "/One_more_fable-/",
   plugins: [react(), tailwindcss(), viteSingleFile()],
   resolve: {
     alias: {
