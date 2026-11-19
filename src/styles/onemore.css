@@ -2753,3 +2753,119 @@ button{ font-family: inherit; color: inherit; background: none; border: none; cu
   color: var(--red);
   letter-spacing: .06em;
 }
+
+/* ============================================================
+   v24.1 — MOBILE PRESENTATION PASS
+   Layout-only: keep the title sheet readable and scrollable on
+   short phones, and keep the opening's skip control in reach.
+   No scene, state, input, or gameplay rules are changed.
+   ============================================================ */
+@media (max-width: 720px) and (orientation: portrait){
+  .screen-title{
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: max(18px, env(safe-area-inset-top)) 0
+      calc(96px + env(safe-area-inset-bottom));
+  }
+  .screen-title::-webkit-scrollbar{ display: none; }
+
+  .title-main{
+    width: 100%;
+    max-width: 560px;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .enso-wrap{
+    top: 24%;
+    width: min(42vh, 108vw, 340px);
+    height: min(42vh, 108vw, 340px);
+    opacity: .78;
+  }
+  .title-chip{
+    gap: 9px;
+    font-size: clamp(8px, 2.35vw, 10px);
+    letter-spacing: .38em;
+    text-indent: .38em;
+  }
+  .title-chip::before, .title-chip::after{ width: 22px; }
+  .title-word{
+    max-width: 100%;
+    font-size: clamp(48px, 13.5vw, 72px);
+    line-height: 1.08;
+    margin-top: 6px;
+  }
+  .title-sub{
+    max-width: 330px;
+    margin-top: 10px;
+    font-size: clamp(9px, 2.7vw, 11px);
+    line-height: 1.65;
+  }
+
+  .brush-entry{
+    width: min(100%, 420px);
+    min-height: 62px;
+    margin-top: 17px;
+  }
+  .mode-row{
+    width: min(100%, 420px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 14px auto 0;
+  }
+  .mode-row .play-btn, .endless-btn{
+    width: 100%;
+    min-height: 66px;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 12px 18px;
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+  .minor-row{
+    width: min(100%, 420px);
+    margin: 14px auto 0;
+    gap: 8px;
+    justify-content: center;
+  }
+  .minor-row > *, .minor-row .board-btn{
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 8px 6px 7px;
+  }
+  .minor-row .play-label{
+    font-size: 6.5px;
+    letter-spacing: .14em;
+    text-indent: .14em;
+  }
+
+  .settings-btn{
+    position: fixed;
+    left: max(12px, env(safe-area-inset-left));
+    right: auto;
+    bottom: max(12px, calc(8px + env(safe-area-inset-bottom)));
+    z-index: 60;
+  }
+  .opening-btn:not(.settings-btn){
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, calc(8px + env(safe-area-inset-bottom)));
+    z-index: 60;
+  }
+}
+
+/* The skip chip is a true thumb target and clears the home-indicator
+   area on iOS instead of sitting on the viewport's lower edge. */
+.intro-skip{
+  position: fixed;
+  right: max(14px, calc(12px + env(safe-area-inset-right)));
+  bottom: max(18px, calc(12px + env(safe-area-inset-bottom)));
+  z-index: 240;
+  min-height: 44px;
+  padding: 11px 16px 10px;
+  font-size: 10px;
+}
