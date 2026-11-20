@@ -2869,3 +2869,94 @@ button{ font-family: inherit; color: inherit; background: none; border: none; cu
   padding: 11px 16px 10px;
   font-size: 10px;
 }
+
+
+/* ============================================================
+   v24.2 — PORTRAIT VIEWPORT + BOTTOM CONTROL RECOVERY
+   Presentation only. Keep every existing control and its handler.
+   ============================================================ */
+@media (max-width: 720px) and (orientation: portrait){
+  /* Use the visible mobile viewport, not the browser's older 100vh
+     estimate. This keeps fixed controls above browser/system chrome. */
+  #stage{
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+  .screen,
+  #hud{
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  /* The title sheet is the one intentionally scrollable screen.
+     Keep the complete menu in the scroll flow and reserve a clear
+     thumb-safe lane for the two fixed corner buttons. */
+  .screen-title{
+    box-sizing: border-box;
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: calc(88px + max(12px, env(safe-area-inset-bottom)));
+    scroll-padding-top: max(18px, env(safe-area-inset-top));
+    scroll-padding-bottom: calc(88px + max(12px, env(safe-area-inset-bottom)));
+  }
+  .title-main{
+    flex-shrink: 0;
+    padding-bottom: 10px;
+  }
+  .brush-entry,
+  .mode-row .play-btn,
+  .endless-btn{
+    flex-shrink: 0;
+  }
+  .minor-row{
+    flex-shrink: 0;
+    margin-bottom: 4px;
+  }
+
+  /* Corner controls remain above the phone's home/navigation area
+     and keep a reliable touch target. */
+  .settings-btn,
+  .opening-btn:not(.settings-btn){
+    min-height: 44px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  /* The in-run pause, sound and dash controls also clear the
+     navigation gesture area instead of being clipped at the edge. */
+  .hud-br{
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .hud-br .icon-btn{
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+  .hud-br .dash-seal-btn{
+    flex: 0 0 auto;
+  }
+  .hud-bl{
+    left: max(12px, env(safe-area-inset-left));
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    max-width: calc(100vw - 180px);
+  }
+}
+
+/* Short portrait phones: tighten decorative spacing, never remove
+   or disable a menu action. The title remains vertically scrollable. */
+@media (max-width: 720px) and (orientation: portrait) and (max-height: 760px){
+  .screen-title{
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-bottom: calc(82px + max(12px, env(safe-area-inset-bottom)));
+  }
+  .title-sub{ margin-top: 6px; }
+  .brush-entry{ min-height: 54px; margin-top: 11px; }
+  .mode-row{ margin-top: 9px; gap: 7px; }
+  .mode-row .play-btn,
+  .endless-btn{ min-height: 56px; padding-top: 9px; padding-bottom: 9px; }
+  .minor-row{ margin-top: 9px; gap: 6px; }
+}
